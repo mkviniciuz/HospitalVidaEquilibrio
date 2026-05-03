@@ -119,7 +119,7 @@ export default function PatientForm() {
           <ChevronLeft className="w-5 h-5" />
           Voltar
         </button>
-        <h2 className="text-2xl font-bold text-slate-800">
+        <h2 className="text-2xl font-bold text-slate-800 dark:text-white">
           {isEdit ? 'Editar Cadastro' : 'Novo Cadastro de Paciente'}
         </h2>
         <div className="w-20"></div> {/* Spacer */}
@@ -254,7 +254,7 @@ export default function PatientForm() {
             <div className="md:col-span-3">
               <Label>Alergias Conhecidas</Label>
               <textarea 
-                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all min-h-[80px]"
+                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white rounded-lg focus:ring-2 focus:ring-primary outline-none transition-all min-h-[80px]"
                 {...register('allergies')}
                 placeholder="Descreva alergias a medicamentos, alimentos ou materiais..."
               />
@@ -270,11 +270,11 @@ export default function PatientForm() {
               <div className="flex gap-4 mt-2">
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="radio" value="Particular" {...register('service_type')} className="w-4 h-4 accent-primary" />
-                  <span className="text-slate-700">Particular</span>
+                  <span className="text-slate-700 dark:text-slate-200">Particular</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input type="radio" value="Convênio" {...register('service_type')} className="w-4 h-4 accent-primary" />
-                  <span className="text-slate-700">Convênio</span>
+                  <span className="text-slate-700 dark:text-slate-200">Convênio</span>
                 </label>
               </div>
             </div>
@@ -299,14 +299,14 @@ export default function PatientForm() {
 
         {/* SEÇÃO: LGPD */}
         <Section title="Termos e Consentimento (LGPD)" icon={<ShieldCheck className="w-5 h-5" />}>
-          <div className="p-4 bg-slate-50 rounded-lg border border-slate-200">
+          <div className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700">
             <label className="flex items-start gap-3 cursor-pointer">
               <input 
                 type="checkbox" 
                 {...register('lgpd_consent', { required: 'O consentimento é obrigatório' })} 
                 className="mt-1 w-5 h-5 accent-primary rounded" 
               />
-              <span className="text-sm text-slate-600 leading-relaxed">
+              <span className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
                 Autorizo a **Clínica Vida Equilíbrio** a realizar o tratamento dos meus dados pessoais e sensíveis para fins de atendimento médico, diagnósticos e comunicações relacionadas à saúde, em conformidade com a Lei Geral de Proteção de Dados (Lei 13.709/2018).
               </span>
             </label>
@@ -332,8 +332,8 @@ export default function PatientForm() {
 // Sub-componentes auxiliares
 function Section({ title, icon, children }) {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-      <div className="bg-slate-50/50 px-6 py-4 border-b border-slate-100 flex items-center gap-2 text-slate-800">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div className="bg-slate-50/50 dark:bg-slate-800/50 px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center gap-2 text-slate-800 dark:text-white">
         {icon}
         <h3 className="font-bold">{title}</h3>
       </div>
@@ -345,14 +345,14 @@ function Section({ title, icon, children }) {
 }
 
 function Label({ children }) {
-  return <label className="block text-sm font-semibold text-slate-700 mb-1.5">{children}</label>;
+  return <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1.5">{children}</label>;
 }
 
 const Input = React.forwardRef(({ error, ...props }, ref) => (
   <div>
     <input
       ref={ref}
-      className={`w-full px-4 py-2 border ${error ? 'border-red-400 focus:ring-red-200' : 'border-slate-300 focus:ring-primary/20'} rounded-lg focus:ring-4 focus:border-primary outline-none transition-all`}
+      className={`w-full px-4 py-2 border ${error ? 'border-red-400 focus:ring-red-200' : 'border-slate-300 dark:border-slate-700 focus:ring-primary/20'} rounded-lg focus:ring-4 focus:border-primary outline-none transition-all dark:bg-slate-800 dark:text-white`}
       {...props}
     />
     {error && <p className="text-red-500 text-xs mt-1">{error.message}</p>}
@@ -364,7 +364,7 @@ const ControllerInput = React.forwardRef(({ error, mask, ...props }, ref) => (
     <input
       {...props}
       ref={ref}
-      className={`w-full px-4 py-2 border ${error ? 'border-red-400 focus:ring-red-200' : 'border-slate-300 focus:ring-primary/20'} rounded-lg focus:ring-4 focus:border-primary outline-none transition-all`}
+      className={`w-full px-4 py-2 border ${error ? 'border-red-400 focus:ring-red-200' : 'border-slate-300 dark:border-slate-700 focus:ring-primary/20'} rounded-lg focus:ring-4 focus:border-primary outline-none transition-all dark:bg-slate-800 dark:text-white`}
       placeholder={props.placeholder || mask.replace(/9/g, '_')}
     />
     {error && <p className="text-red-500 text-xs mt-1">{error.message}</p>}
@@ -376,7 +376,7 @@ const Select = React.forwardRef(({ error, children, ...props }, ref) => {
     <div>
       <select
         ref={ref}
-        className={`w-full px-4 py-2 border ${error ? 'border-red-400 focus:ring-red-200' : 'border-slate-300 focus:ring-primary/20'} rounded-lg focus:ring-4 focus:border-primary outline-none transition-all bg-white`}
+        className={`w-full px-4 py-2 border ${error ? 'border-red-400 focus:ring-red-200' : 'border-slate-300 dark:border-slate-700 focus:ring-primary/20'} rounded-lg focus:ring-4 focus:border-primary outline-none transition-all bg-white dark:bg-slate-800 dark:text-white`}
         {...props}
       >
         {children}

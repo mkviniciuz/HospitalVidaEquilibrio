@@ -1,23 +1,14 @@
 import { useParams, Link } from 'react-router-dom';
-import { Users, BedDouble, LayoutDashboard, Settings, Stethoscope, ClipboardList, ArrowRight } from 'lucide-react';
+import { Users, BedDouble, LayoutDashboard, Settings, Stethoscope, ClipboardList, ArrowRight, History } from 'lucide-react';
 
 const QUICK_ACCESS = {
   administrador: [
     {
       icon: Users,
-      title: 'Gestão de Usuários',
-      desc: 'Gerencie os funcionários cadastrados no sistema.',
-      to: '/dashboard/administrador/users',
-      color: 'bg-purple-50 text-purple-600',
-      border: 'hover:border-purple-200',
-      link: '/dashboard/administrador/users',
-    },
-    {
-      icon: Users,
-      title: 'Pacientes',
-      desc: 'Gerencie o cadastro de pacientes da clínica.',
+      title: 'Gestão de Pacientes',
+      desc: 'Visualize, cadastre e edite informações dos pacientes.',
       to: '/dashboard/administrador/patients',
-      color: 'bg-blue-50 text-blue-600',
+      color: 'bg-blue-100 text-blue-600',
       border: 'hover:border-blue-200',
     },
     {
@@ -25,15 +16,23 @@ const QUICK_ACCESS = {
       title: 'Mapa de Leitos',
       desc: 'Controle a ocupação e liberação dos leitos.',
       to: '/dashboard/administrador/beds',
-      color: 'bg-emerald-50 text-emerald-600',
+      color: 'bg-emerald-100 text-emerald-600',
       border: 'hover:border-emerald-200',
+    },
+    {
+      icon: History,
+      title: 'Logs do Sistema',
+      desc: 'Histórico de todas as ações realizadas no sistema.',
+      to: '/dashboard/administrador/logs',
+      color: 'bg-orange-100 text-orange-600',
+      border: 'hover:border-orange-200',
     },
   ],
   recepcao: [
     {
       icon: Users,
-      title: 'Pacientes',
-      desc: 'Gerencie o cadastro de pacientes da clínica.',
+      title: 'Cadastro de Pacientes',
+      desc: 'Gerencie o banco de dados de pacientes.',
       to: '/dashboard/recepcao/patients',
       color: 'bg-blue-50 text-blue-600',
       border: 'hover:border-blue-200',
@@ -41,7 +40,7 @@ const QUICK_ACCESS = {
     {
       icon: BedDouble,
       title: 'Mapa de Leitos',
-      desc: 'Controle a ocupação e liberação dos leitos.',
+      desc: 'Visualize a disponibilidade e vincule pacientes.',
       to: '/dashboard/recepcao/beds',
       color: 'bg-emerald-50 text-emerald-600',
       border: 'hover:border-emerald-200',
@@ -51,112 +50,107 @@ const QUICK_ACCESS = {
     {
       icon: BedDouble,
       title: 'Mapa de Leitos',
-      desc: 'Veja os pacientes internados e acesse prontuários.',
+      desc: 'Acompanhe seus pacientes e administre medicamentos.',
       to: '/dashboard/enfermeira/beds',
       color: 'bg-emerald-50 text-emerald-600',
       border: 'hover:border-emerald-200',
     },
-    {
-      icon: ClipboardList,
-      title: 'Prontuários',
-      desc: 'Registre medicações e observações clínicas.',
-      to: '/dashboard/enfermeira/beds',
-      color: 'bg-teal-50 text-teal-600',
-      border: 'hover:border-teal-200',
-    },
   ],
   medico: [
     {
-      icon: Stethoscope,
-      title: 'Pacientes',
-      desc: 'Consulte o status dos pacientes internados.',
-      to: '/dashboard/medico/patients',
-      color: 'bg-blue-50 text-blue-600',
-      border: 'hover:border-blue-200',
-    },
-  ],
-};
-
-const greetings = () => {
-  const h = new Date().getHours();
-  if (h < 12) return 'Bom dia';
-  if (h < 18) return 'Boa tarde';
-  return 'Boa noite';
+      icon: BedDouble,
+      title: 'Mapa de Leitos',
+      desc: 'Visualize prontuários e prescreva tratamentos.',
+      to: '/dashboard/medico/beds',
+      color: 'bg-emerald-50 text-emerald-600',
+      border: 'hover:border-emerald-200',
+    }
+  ]
 };
 
 export default function DashboardHome() {
   const { role } = useParams();
-
-  const roleLabel = {
-    medico: 'Médico', enfermeira: 'Enfermeira',
-    administrador: 'Administrador', recepcao: 'Recepção',
-  }[role] || role;
-
   const cards = QUICK_ACCESS[role] || [];
 
+  const roleLabels = {
+    administrador: 'Administração',
+    recepcao: 'Recepção',
+    enfermeira: 'Enfermagem',
+    medico: 'Médico'
+  };
+
+  const roleLabel = roleLabels[role] || role;
+
+  const greetings = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Bom dia';
+    if (hour < 18) return 'Boa tarde';
+    return 'Boa noite';
+  };
+
   return (
-    <div className="max-w-7xl mx-auto animate-fade-in">
-      {/* Welcome Banner */}
+    <div className="max-w-6xl mx-auto py-4">
+      {/* Welcome Header */}
       <div className="mb-10 animate-slide-up">
-        <p className="text-sm text-slate-500 font-medium mb-1">{greetings()}, bem-vindo(a) 👋</p>
-        <h1 className="text-3xl font-bold text-slate-800 mb-1">Painel de <span className="text-primary">{roleLabel}</span></h1>
-        <p className="text-slate-500 text-sm">
-          Selecione uma área abaixo para começar.
+        <p className="text-sm text-slate-500 dark:text-slate-400 font-medium mb-1">{greetings()}, bem-vindo(a) 👋</p>
+        <h1 className="text-3xl font-black text-slate-800 dark:text-white mb-1">Painel de <span className="text-primary">{roleLabel}</span></h1>
+        <p className="text-slate-500 dark:text-slate-400 text-sm">
+          Selecione uma área abaixo para começar a trabalhar.
         </p>
       </div>
 
       {/* Quick Access Cards */}
       {cards.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-          {cards.map((card, i) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          {cards.map((card, idx) => (
             <Link
-              key={i}
+              key={idx}
               to={card.to}
-              className={`group bg-white rounded-2xl p-6 border-2 border-slate-100 ${card.border} transition-all duration-200 hover-lift flex flex-col gap-4 animate-slide-up`}
-              style={{ animationDelay: `${i * 80}ms` }}
+              className={`group relative p-8 rounded-[2.5rem] glass-card border transition-all hover-lift ${card.border}`}
             >
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${card.color}`}>
-                <card.icon className="w-6 h-6" />
+              <div className={`w-16 h-16 ${card.color} dark:bg-opacity-20 rounded-2xl flex items-center justify-center mb-6 transition-transform group-hover:scale-110 duration-300 shadow-sm`}>
+                <card.icon className="w-8 h-8" />
               </div>
-              <div className="flex-1">
-                <h3 className="font-bold text-slate-800 text-base mb-1">{card.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed">{card.desc}</p>
-              </div>
-              <div className="flex items-center gap-1 text-primary text-sm font-semibold group-hover:gap-2 transition-all">
-                Acessar <ArrowRight className="w-4 h-4" />
+              <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">{card.title}</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-6">{card.desc}</p>
+              <div className="flex items-center text-primary font-bold text-sm">
+                Acessar agora
+                <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
               </div>
             </Link>
           ))}
         </div>
       )}
 
-      {/* Stats row placeholder */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 animate-slide-up delay-300">
-        <div className="bg-white rounded-2xl p-5 border border-slate-100 flex items-center gap-4">
-          <div className="bg-emerald-50 p-3 rounded-xl">
-            <BedDouble className="w-6 h-6 text-emerald-600" />
+      {/* Stats row */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 animate-slide-up delay-300">
+        <div className="glass-card rounded-[2rem] p-6 flex items-center gap-4 transition-all">
+          <div className="bg-emerald-100 dark:bg-emerald-900/40 p-4 rounded-2xl text-emerald-600 dark:text-emerald-400">
+            <BedDouble className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Visão Geral</p>
-            <p className="font-bold text-slate-800 text-lg">Sistema Ativo</p>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-black">Status Geral</p>
+            <p className="font-black text-slate-800 dark:text-white text-lg">Monitoramento Ativo</p>
           </div>
         </div>
-        <div className="bg-white rounded-2xl p-5 border border-slate-100 flex items-center gap-4">
-          <div className="bg-blue-50 p-3 rounded-xl">
-            <LayoutDashboard className="w-6 h-6 text-blue-600" />
+        
+        <div className="glass-card rounded-[2rem] p-6 flex items-center gap-4 transition-all">
+          <div className="bg-blue-100 dark:bg-blue-900/40 p-4 rounded-2xl text-blue-600 dark:text-blue-400">
+            <Stethoscope className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Atividade</p>
-            <p className="font-bold text-slate-800 text-lg">Resumo do Dia</p>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-black">Equipe</p>
+            <p className="font-black text-slate-800 dark:text-white text-lg">Plantão em Dia</p>
           </div>
         </div>
-        <div className="bg-white rounded-2xl p-5 border border-slate-100 flex items-center gap-4">
-          <div className="bg-purple-50 p-3 rounded-xl">
-            <Settings className="w-6 h-6 text-purple-600" />
+
+        <div className="glass-card rounded-[2rem] p-6 flex items-center gap-4 transition-all">
+          <div className="bg-purple-100 dark:bg-purple-900/40 p-4 rounded-2xl text-purple-600 dark:text-purple-400">
+            <ClipboardList className="w-6 h-6" />
           </div>
           <div>
-            <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold">Configurações</p>
-            <p className="font-bold text-slate-800 text-lg">Preferências</p>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-black">Segurança</p>
+            <p className="font-black text-slate-800 dark:text-white text-lg">Logs Auditados</p>
           </div>
         </div>
       </div>

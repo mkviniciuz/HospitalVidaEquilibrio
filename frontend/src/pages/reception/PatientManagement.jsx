@@ -60,8 +60,8 @@ export default function PatientManagement() {
             <UserCheck className="w-7 h-7 text-primary" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-slate-800">Pacientes</h2>
-            <p className="text-slate-500 text-sm">
+            <h2 className="text-2xl font-bold text-slate-800 dark:text-white">Pacientes</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm">
               {patients.length} paciente{patients.length !== 1 ? 's' : ''} cadastrado{patients.length !== 1 ? 's' : ''}
             </p>
           </div>
@@ -73,7 +73,7 @@ export default function PatientManagement() {
             <input
               type="text"
               placeholder="Buscar nome ou CPF..."
-              className="input-modern pl-10 py-2.5 text-sm"
+              className="input-modern dark:bg-slate-800 dark:border-slate-700 dark:text-white pl-10 py-2.5 text-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -89,23 +89,23 @@ export default function PatientManagement() {
       </div>
 
       {/* Table */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden animate-slide-up delay-150">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden animate-slide-up delay-150">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="bg-gradient-to-r from-slate-50 to-white border-b border-slate-100">
-              <th className="p-4 font-semibold text-slate-500 text-xs uppercase tracking-wider">Paciente</th>
-              <th className="p-4 font-semibold text-slate-500 text-xs uppercase tracking-wider">CPF</th>
-              <th className="p-4 font-semibold text-slate-500 text-xs uppercase tracking-wider">Contato</th>
-              <th className="p-4 font-semibold text-slate-500 text-xs uppercase tracking-wider">Convênio</th>
-              <th className="p-4 font-semibold text-slate-500 text-xs uppercase tracking-wider">Data Entrada</th>
-              <th className="p-4 font-semibold text-slate-500 text-xs uppercase tracking-wider text-center">Ações</th>
+            <tr className="bg-gradient-to-r from-slate-50 to-white dark:from-slate-800/50 dark:to-slate-900 border-b border-slate-100 dark:border-slate-800">
+              <th className="p-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Paciente</th>
+              <th className="p-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">CPF</th>
+              <th className="p-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Contato</th>
+              <th className="p-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Convênio</th>
+              <th className="p-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider">Data Entrada</th>
+              <th className="p-4 font-semibold text-slate-500 dark:text-slate-400 text-xs uppercase tracking-wider text-center">Ações</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50">
+          <tbody className="divide-y divide-slate-50 dark:divide-slate-800">
             {filteredPatients.map((patient, i) => (
               <tr
                 key={patient.id}
-                className="hover:bg-slate-50/60 transition-colors group animate-slide-right"
+                className="hover:bg-slate-50/60 dark:hover:bg-slate-800/50 transition-colors group animate-slide-right"
                 style={{ animationDelay: `${i * 40}ms` }}
               >
                 <td className="p-4">
@@ -114,32 +114,32 @@ export default function PatientManagement() {
                       {patient.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
-                      <p className="text-slate-800 font-bold text-sm">{patient.name}</p>
+                      <p className="text-slate-800 dark:text-white font-bold text-sm">{patient.name}</p>
                       {patient.social_name && (
-                        <p className="text-xs text-slate-400 italic">"{patient.social_name}"</p>
+                        <p className="text-xs text-slate-400 dark:text-slate-500 italic">"{patient.social_name}"</p>
                       )}
                     </div>
                   </div>
                 </td>
-                <td className="p-4 text-slate-600 text-sm font-mono font-medium">{patient.cpf}</td>
+                <td className="p-4 text-slate-600 dark:text-slate-300 text-sm font-mono font-medium">{patient.cpf}</td>
                 <td className="p-4">
                   <div className="flex flex-col text-xs gap-0.5">
-                    <span className="text-slate-700 font-medium">{patient.whatsapp || patient.phone || '—'}</span>
-                    <span className="text-slate-400">{patient.email || '—'}</span>
+                    <span className="text-slate-700 dark:text-slate-200 font-medium">{patient.whatsapp || patient.phone || '—'}</span>
+                    <span className="text-slate-400 dark:text-slate-500">{patient.email || '—'}</span>
                   </div>
                 </td>
                 <td className="p-4">
                   <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wide ${
                     patient.service_type === 'Particular'
-                      ? 'bg-amber-100 text-amber-700'
-                      : 'bg-blue-100 text-blue-700'
+                      ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
+                      : 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'
                   }`}>
                     {patient.service_type || 'Particular'}
                   </span>
                 </td>
-                <td className="p-4 text-slate-500 text-xs">
+                <td className="p-4 text-slate-500 dark:text-slate-400 text-xs">
                   {new Date(patient.entry_date).toLocaleDateString('pt-BR')}
-                  <span className="text-slate-400 ml-1">
+                  <span className="text-slate-400 dark:text-slate-500 ml-1">
                     {new Date(patient.entry_date).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </td>
@@ -167,12 +167,12 @@ export default function PatientManagement() {
             {filteredPatients.length === 0 && (
               <tr>
                 <td colSpan="6" className="p-16 text-center">
-                  <div className="flex flex-col items-center gap-3 text-slate-400 animate-fade-in">
-                    <div className="bg-slate-100 p-5 rounded-full">
+                  <div className="flex flex-col items-center gap-3 text-slate-400 dark:text-slate-500 animate-fade-in">
+                    <div className="bg-slate-100 dark:bg-slate-800 p-5 rounded-full">
                       <User className="w-10 h-10 opacity-50" />
                     </div>
-                    <p className="font-medium">Nenhum paciente encontrado.</p>
-                    <p className="text-sm text-slate-400">Tente ajustar o filtro ou cadastre um novo paciente.</p>
+                    <p className="font-medium text-slate-500 dark:text-slate-400">Nenhum paciente encontrado.</p>
+                    <p className="text-sm">Tente ajustar o filtro ou cadastre um novo paciente.</p>
                   </div>
                 </td>
               </tr>

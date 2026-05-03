@@ -27,7 +27,7 @@ const isAdmin = (req, res, next) => {
 
 // Middleware to check if user is admin, reception or nurse
 const isReceptionOrAdmin = (req, res, next) => {
-  const allowed = ['administrador', 'recepcao', 'enfermeira'];
+  const allowed = ['administrador', 'recepcao'];
   if (req.user && allowed.includes(req.user.role)) {
     next();
   } else {
@@ -35,4 +35,14 @@ const isReceptionOrAdmin = (req, res, next) => {
   }
 };
 
-module.exports = { authenticateToken, isAdmin, isReceptionOrAdmin, JWT_SECRET };
+// Middleware to check if user is admin or medico (for discharge/release actions)
+const isMedicoOrAdmin = (req, res, next) => {
+  const allowed = ['administrador', 'medico'];
+  if (req.user && allowed.includes(req.user.role)) {
+    next();
+  } else {
+    res.status(403).json({ message: 'Acesso negado. Apenas médicos e administradores podem dar alta a pacientes.' });
+  }
+};
+
+module.exports = { authenticateToken, isAdmin, isReceptionOrAdmin, isMedicoOrAdmin, JWT_SECRET };

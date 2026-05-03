@@ -60,6 +60,17 @@ export const api = {
     return data;
   },
 
+  updateMyPassword: async (currentPassword, newPassword) => {
+    const res = await fetch(`${API_URL}/users/me/password`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify({ currentPassword, newPassword })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    return data;
+  },
+
   // ===================================
   // PACIENTES
   // ===================================
@@ -201,5 +212,60 @@ export const api = {
     const data = await res.json();
     if (!res.ok) throw new Error(data.message);
     return data;
+  },
+
+  // ===================================
+  // EVOLUÇÃO MÉDICA
+  // ===================================
+  addMedicalReport: async (reportData) => {
+    const res = await fetch(`${API_URL}/medical-reports`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(reportData)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    return data;
+  },
+
+  deleteMedicalReport: async (id) => {
+    const res = await fetch(`${API_URL}/medical-reports/${id}`, {
+      method: 'DELETE',
+      headers: getHeaders()
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    return data;
+  },
+
+  // ===================================
+  // LOGS DO SISTEMA
+  // ===================================
+  getLogs: async () => {
+    const res = await fetch(`${API_URL}/logs`, { headers: getHeaders() });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message);
+    return data;
+  },
+  // Configurações do Aplicativo
+  getAppSettings: async () => {
+    const response = await fetch(`${API_URL}/app-settings`);
+    if (!response.ok) throw new Error('Erro ao buscar configurações.');
+    return response.json();
+  },
+  updateAppSettings: async (formData) => {
+    const response = await fetch(`${API_URL}/app-settings`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        // Não definir Content-Type ao enviar FormData, o navegador faz isso automaticamente com o boundary correto
+      },
+      body: formData
+    });
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.message || 'Erro ao atualizar configurações.');
+    }
+    return response.json();
   }
 };

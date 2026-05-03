@@ -94,6 +94,43 @@ const db = new sqlite3.Database(dbPath, (err) => {
         FOREIGN KEY (patient_id) REFERENCES patients (id) ON DELETE CASCADE
       )`);
 
+      // Tabela de Relatórios Médicos (Evolução)
+      db.run(`CREATE TABLE IF NOT EXISTS medical_reports (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        patient_id INTEGER,
+        description TEXT NOT NULL,
+        status TEXT NOT NULL, -- 'melhorou' ou 'piorou'
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (patient_id) REFERENCES patients (id) ON DELETE CASCADE
+      )`);
+
+      // Tabela de Logs do Sistema
+      db.run(`CREATE TABLE IF NOT EXISTS system_logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER,
+        user_name TEXT,
+        user_role TEXT,
+        action TEXT NOT NULL,
+        details TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE SET NULL
+      )`);
+
+      // Tabela de Configurações do Aplicativo
+      db.run(`CREATE TABLE IF NOT EXISTS app_settings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        app_name TEXT DEFAULT 'Vida Equilíbrio',
+        app_logo TEXT,
+        app_primary_color TEXT DEFAULT '#5d9e90'
+      )`);
+
+      // Inicializar configurações se não existirem
+      db.get('SELECT COUNT(*) as count FROM app_settings', (err, row) => {
+        if (!err && row.count === 0) {
+          db.run('INSERT INTO app_settings (app_name) VALUES (?)', ['Vida Equilíbrio']);
+        }
+      });
+
       // Popular leitos se não existirem
       db.get('SELECT COUNT(*) as count FROM beds', (err, row) => {
         if (!err && row.count === 0) {
